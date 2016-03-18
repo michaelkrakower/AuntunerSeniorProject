@@ -61,9 +61,10 @@ unit = struct('wave', [], 'dft', []);
 for i = 2 : length(anaPm) - 1
     left = anaPm(i-1);
     right = anaPm(i+1);
-    %len(input(left:right))
-    %len(hann(right-left+1))
-    unit(i).wave  = input(left : right) .* hann(right - left + 1);
+    %length(input(left:right))
+    %length(hann(right-left+1))
+    dummy_var = (input(left : right))'; % Transposed input(left : right) to get rid of error 'Matrix Dimensions Must Agree'
+    unit(i).wave  = dummy_var .* hann(right - left + 1);
     N = length(unit(i).wave);
     M = 2^nextpow2(2*N-1);
 %     M = round(1.1*N/pitchScale);
@@ -136,9 +137,13 @@ output = output(minLen:outPm(count));
 
         len = length(y);
         if len < max
-            y = [y zeros(1, max - len)];
+            y = [zeros(1, max - len)]; % Originally: y = [y zeros(1, max - len)];
         end
-
+        length(y(range))
+        length(x)
+        y(range)
+        x
+        %dummy_var_2 = (x)'
         y(range) = y(range) + x;
     end
 
