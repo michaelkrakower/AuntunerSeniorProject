@@ -61,8 +61,9 @@ unit = struct('wave', [], 'dft', []);
 for i = 2 : length(anaPm) - 1
     left = anaPm(i-1);
     right = anaPm(i+1);
-    %len(input(left:right))
-    %len(hann(right-left+1))
+    length(input(left:right))
+    length(hann(right-left+1))
+    dummy_var = input(left : right)'
     unit(i).wave  = input(left : right) .* hann(right - left + 1);
     N = length(unit(i).wave);
     M = 2^nextpow2(2*N-1);
