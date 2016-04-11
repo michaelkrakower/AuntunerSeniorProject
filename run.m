@@ -20,12 +20,12 @@ data.pitchMarks = [];	%pitch marks of input signal
 data.Candidates = [];	%pitch marks candidates
 
 [WaveIn, fs] = audioread(config.fileIn);	%read input signal from file
-WaveIn = WaveIn - mean(WaveIn); 				%normalize input wave
+WaveIn = WaveIn' - mean(WaveIn); 				%normalize input wave
 
 [LowPass] = LowPassFilter(WaveIn, fs, config.cutOffFreq); %low-pass filter for pre-processing
 PitchContour = PitchEstimation(LowPass, fs);							%pitch contour estimation
 PitchMarking(WaveIn, PitchContour, fs);										%do pitch marking and PSOLA
-audiowrite(data.waveOut, fs, config.fileOut);								%write output result to file
+audiowrite(config.fileOut, data.waveOut, fs);								%write output result to file
 
 if config.playWavOut
     audioplayer(data.waveOut, fs);
@@ -34,3 +34,4 @@ end
 if config.displayPitchMarks
     PlotPitchMarks(WaveIn, data.candidates, data.pitchMarks, PitchContour); %show the pitch marks
 end
+play(ans)

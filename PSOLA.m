@@ -20,7 +20,7 @@ reconstruct = config.reconstruct;
 %% Calculate input pitch period from analysis pitch marks
 len = length(anaPm);
 if len <= 3
-    output = input';
+    output = input;
     return;
 end
 
@@ -104,7 +104,7 @@ for j=2:length(synPm)-1
                 newUnitWave = resampling(newUnitWave, resamplingScale);
             end                    
             
-            output = addTogether(output, newUnitWave, outPm(j-1));
+            output = addTogether(output', newUnitWave, outPm(j-1))';
             
             if outPm(j-1) < minLen
                 minLen = outPm(j-1);
@@ -135,8 +135,15 @@ output = output(minLen:outPm(count));
         end
 
         len = length(y);
-        if len < max
-            y = [y zeros(1, max - len)];
+        sz=size(y);
+        if (sz(1)==1)
+            if len < max
+                y = [y zeros(1,max-len)];
+            end
+        else
+            if len < max
+                y = [y ; zeros(1,max-len)'];
+            end
         end
 
         y(range) = y(range) + x;
